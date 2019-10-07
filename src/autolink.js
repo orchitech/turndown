@@ -3,7 +3,7 @@ function tryConvertAutolink(link) {
     const uri = /^([a-zA-Z][a-zA-Z0-9+.-]{1,31}:[^\s\x00-\x1f<>\\]*)$/
 
     // https://spec.commonmark.org/0.29/#email-address
-    const mail = /[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(@)[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+(?![-_])/
+    const mail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
 
     if (uri.test(link) || mail.test(link)) {
         return link 
@@ -24,11 +24,19 @@ function tests() {
         'made-up-scheme://foo,bar',
         'http://../',
         'localhost:5001/foo',
+
+        'foo@bar.example.com',
+        'foo+special@Bar.baz-bar0.com'
     ]
 
     const invalidAutolinks = [
         'http://foo.bar/baz bim',
-        'http://example.com/\\[\\'
+        'http://example.com/\\[\\',
+        'foo\\+@bar.example.com',
+        '<>',
+        ' http://foo.bar ',
+        'm:abc',
+        'foo.bar.baz'
     ]
 
     validAutolinks.forEach(link => {
