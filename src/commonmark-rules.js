@@ -140,7 +140,7 @@ rules.inlineLink = {
   replacement: function (content, node) {
     var href = node.getAttribute('href')
     var title = node.title ? ' "' + node.title + '"' : ''
-    return '[' + content + '](' + href + title + ')'
+    return '[' + content + '](' + href.replace(/[()]/g, '\\$&') + title + ')'
   }
 }
 
