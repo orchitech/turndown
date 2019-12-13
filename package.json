@@ -44,5 +44,9 @@
     "build-test": "browserify test/turndown-test.js --outfile test/turndown-test.browser.js",
     "prepublish": "npm run build",
     "test": "npm run build && npm run build-test && standard ./src/**/*.js && node test/turndown-test.js"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
   }
 }
