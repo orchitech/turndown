@@ -10,6 +10,8 @@ export default function Node (node) {
 
 function isBlank (node) {
   return (
+    ['A', 'THEAD', 'TBODY', 'TR', 'TH', 'TD', 'IFRAME', 'SCRIPT', 'AUDIO', 'VIDEO'].indexOf(node.nodeName) === -1 &&
+    /^\s*$/i.test(node.textContent) &&
     !isVoid(node) &&
     !isMeaningfulWhenBlank(node) &&
     /^\s*$/i.test(node.textContent) &&
