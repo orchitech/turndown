@@ -65,6 +65,7 @@ var turndownService = new TurndownService({ option: 'value' })
 | `blankReplacement`    | rule replacement function | See **Special Rules** below |
 | `keepReplacement`     | rule replacement function | See **Special Rules** below |
 | `defaultReplacement`  | rule replacement function | See **Special Rules** below |
+| `preformattedCode`    | `false` or [`true`](https://github.com/lucthev/collapse-whitespace/issues/16) | `false` |
 
 ## Methods
 
