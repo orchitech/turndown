@@ -46,7 +46,8 @@ export default function TurndownService (options) {
     },
     defaultReplacement: function (content, node) {
       return node.isBlock ? '\n\n' + content + '\n\n' : content
-    }
+    },
+    preformattedCode: false
   }
   this.options = extend({}, defaults, options)
   this.rules = new Rules(this.options)
@@ -70,7 +71,7 @@ TurndownService.prototype = {
 
     if (input === '') return ''
 
-    var output = process.call(this, new RootNode(input))
+    var output = process.call(this, new RootNode(input, this.options))
     return postProcess.call(this, output)
   },
 
@@ -145,7 +146,7 @@ TurndownService.prototype = {
 function process (parentNode) {
   var self = this
   return reduce.call(parentNode.childNodes, function (output, node) {
-    node = new Node(node)
+    node = new Node(node, self.options)
     var replacement = replacementForNode.call(self, node)
     return join(output, replacement)
   }, '')
