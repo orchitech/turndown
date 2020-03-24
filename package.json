@@ -1,7 +1,7 @@
 {
   "name": "@orchitech/turndown",
   "description": "A library that converts HTML to Markdown",
-  "version": "6.0.1-orchi",
+  "version": "6.0.1-orchi.1",
   "author": "Dom Christie + patches by Orchitech",
   "main": "lib/turndown.cjs.js",
   "module": "lib/turndown.es.js",
