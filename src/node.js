@@ -23,11 +23,6 @@ function flankingWhitespace (node, options) {
 
   if (!node.isBlock && !(node.isCode && options.preformattedCode)) {
     var edges = node.textContent.match(/^(\s*)[\s\S]*?(\s*)$/)
-    if (!edges) {
-      console.log(node)
-      console.log('textContent: \'' + node.textContent + '\'')
-      console.log(new Error().stack)
-    }
     var blankWithSpaces = node.isBlank && edges[1] && edges[2]
 
     if (edges[1] && !isFlankedByWhitespace('left', node, options)) {
