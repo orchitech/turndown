@@ -22,16 +22,20 @@ function flankingWhitespace (node, options) {
   var trailing = ''
 
   if (!node.isBlock && !(node.isCode && options.preformattedCode)) {
-    var hasLeading = /^\s/.test(node.textContent)
-    var hasTrailing = /\s$/.test(node.textContent)
-    var blankWithSpaces = node.isBlank && hasLeading && hasTrailing
+    var edges = node.textContent.match(/^(\s*)[\s\S]*?(\s*)$/)
+    if (!edges) {
+      console.log(node)
+      console.log('textContent: \'' + node.textContent + '\'')
+      console.log(new Error().stack)
+    }
+    var blankWithSpaces = node.isBlank && edges[1] && edges[2]
 
-    if (hasLeading && !isFlankedByWhitespace('left', node, options)) {
-      leading = ' '
+    if (edges[1] && !isFlankedByWhitespace('left', node, options)) {
+      leading = edges[1]
     }
 
-    if (!blankWithSpaces && hasTrailing && !isFlankedByWhitespace('right', node, options)) {
-      trailing = ' '
+    if (!blankWithSpaces && edges[2] && !isFlankedByWhitespace('right', node, options)) {
+      trailing = edges[2]
     }
   }
 
