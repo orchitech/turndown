@@ -178,27 +178,3 @@ test('remove elements are overridden by keep', function (t) {
     'Hello <del>world</del><ins>World</ins>'
   )
 })
-
-test('preformattedCode option prevents whitespace collapsing', function (t) {
-  t.plan(4)
-  // Match behavior of `<code>` with CSS set as `white-space: pre-wrap;`, e.g. in GitLab
-  var turndownService = new TurndownService({
-    preformattedCode: true
-  })
-  t.equal(turndownService.turndown(
-    '<p>Four spaces <code>    make an indented code block in Markdown</code></p>'),
-    'Four spaces `    make an indented code block in Markdown`'
-  )
-  t.equal(turndownService.turndown(
-    '<p><code>A line break  </code> <b> note the spaces</b></p>'),
-    '`A line break  ` **note the spaces**'
-  )
-  t.equal(turndownService.turndown(
-    '<p><b>tight</b><code>code</code><b>wrap</b></p>'),
-    '**tight**`code`**wrap**'
-  )
-  t.equal(turndownService.turndown(
-    '<p><b>not so tight </b><code>code</code><b> wrap</b></p>'),
-    '**not so tight** `code` **wrap**'
-  )
-})

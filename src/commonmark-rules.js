@@ -243,8 +243,11 @@ rules.code = {
     return node.nodeName === 'CODE' && !isCodeBlock
   },
 
-  replacement: function (content) {
-    if (!content.trim()) return ''
+  replacement: function (content, node, options) {
+    if (options.preformattedCode) {
+      content = content.replace(/^\n+|\n+$/g, '').replace(/\n/, ' ')
+    }
+    if (options.preformattedCode ? !content : !content.trim()) return ''
 
     var delimiter = '`'
     var leadingSpace = ''
