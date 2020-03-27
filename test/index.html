@@ -930,7 +930,7 @@ Baz</pre>
   <div class="input">
     <p>Foo<span>&nbsp;</span>Bar</p>
   </div>
-  <pre class="expected">Foo Bar</pre>
+  <pre class="expected">Foo&nbsp;Bar</pre>
 </div>
 
 <div class="case" data-name="triple tildes inside code" data-options='{"codeBlockStyle": "fenced", "fence": "~~~"}'>
@@ -987,6 +987,17 @@ Code
 Code
 
 ```</pre>
+</div>
+
+<div class="case" data-name="list-like text with non-breaking spaces">
+  <div class="input">&nbsp;1. First<br>&nbsp;2. Second</div>
+  <pre class="expected">&nbsp;1. First  
+&nbsp;2. Second</pre>
+</div>
+
+<div class="case" data-name="flanking with unicode whitespace">
+  <div class="input"><strong>foo&nbsp;</strong>bar</div>
+  <pre class="expected">**foo**&nbsp;bar</pre>
 </div>
 
 <!-- Behavior of `<code>` with CSS set as `white-space: pre-wrap;`, e.g. in GitLab -->
