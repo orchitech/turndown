@@ -21,23 +21,35 @@ function isBlank (node) {
 }
 
 function flankingWhitespace (node, options) {
-  var leading = ''
-  var trailing = ''
-
-  if (!node.isBlock && !(node.isCode && options.preformattedCode)) {
-    var edges = node.textContent.match(/^(\s*)[\s\S]*?(\s*)$/)
-    var blankWithSpaces = node.isBlank && edges[1] && edges[2]
-
-    if (edges[1] && !isFlankedByWhitespace('left', node, options)) {
-      leading = edges[1]
-    }
-
-    if (!blankWithSpaces && edges[2] && !isFlankedByWhitespace('right', node, options)) {
-      trailing = edges[2]
-    }
+  if (node.isBlock || (node.isCode && options.preformattedCode)) {
+    return { leading: '', trailing: '' }
   }
 
-  return { leading: leading, trailing: trailing }
+  var edges = edgeWhitespace(node.textContent)
+
+  // abandon leading ASCII WS if left-flanked by ASCII WS
+  if (edges.leadingAscii && isFlankedByWhitespace('left', node, options)) {
+    edges.leading = edges.leadingNonAscii
+  }
+
+  // abandon trailing ASCII WS if right-flanked by ASCII WS
+  if (edges.trailingAscii && isFlankedByWhitespace('right', node, options)) {
+    edges.leading = edges.trailingNonAscii
+  }
+
+  return { leading: edges.leading, trailing: edges.trailing }
+}
+
+function edgeWhitespace (string) {
+  var m = string.match(/^(([ \t\r\n]*)(\s*))[\s\S]*?((\s*?)([ \t\r\n]*))$/)
+  return {
+    leading: m[1], // whole string for whitespace-only strings
+    leadingAscii: m[2],
+    leadingNonAscii: m[3],
+    trailing: m[4], // empty for whitespace-only strings
+    trailingNonAscii: m[5],
+    trailingAscii: m[6]
+  }
 }
 
 function isFlankedByWhitespace (side, node, options) {

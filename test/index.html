@@ -933,6 +933,13 @@ Baz</pre>
   <pre class="expected">Foo&nbsp;Bar</pre>
 </div>
 
+<div class="case" data-name="text separated by ASCII and nonASCII space in an element">
+  <div class="input">
+    <p>Foo<span>  &nbsp;  </span>Bar</p>
+  </div>
+  <pre class="expected">Foo &nbsp; Bar</pre>
+</div>
+
 <div class="case" data-name="triple tildes inside code" data-options='{"codeBlockStyle": "fenced", "fence": "~~~"}'>
   <div class="input">
 <pre><code>~~~
@@ -998,6 +1005,26 @@ Code
 <div class="case" data-name="flanking with unicode whitespace">
   <div class="input"><strong>foo&nbsp;</strong>bar</div>
   <pre class="expected">**foo**&nbsp;bar</pre>
+</div>
+
+<div class="case" data-name="element with trailing nonASCII WS followed by nonWS">
+  <div class="input"><i>foo&nbsp;</i>bar</div>
+  <pre class="expected">_foo_&nbsp;bar</pre>
+</div>
+
+<div class="case" data-name="element with trailing nonASCII WS followed by nonASCII WS">
+  <div class="input"><i>foo&nbsp;</i>&nbsp;bar</div>
+  <pre class="expected">_foo_&nbsp;&nbsp;bar</pre>
+</div>
+
+<div class="case" data-name="element with trailing ASCII WS followed by nonASCII WS">
+  <div class="input"><i>foo </i>&nbsp;bar</div>
+  <pre class="expected">_foo_ &nbsp;bar</pre>
+</div>
+
+<div class="case" data-name="element with trailing nonASCII WS followed by ASCII WS">
+  <div class="input"><i>foo&nbsp;</i> bar</div>
+  <pre class="expected">_foo_&nbsp; bar</pre>
 </div>
 
 <!-- Behavior of `<code>` with CSS set as `white-space: pre-wrap;`, e.g. in GitLab -->
