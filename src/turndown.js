@@ -6,7 +6,7 @@ import Node from './node'
 var reduce = Array.prototype.reduce
 var leadingNewLinesRegExp = /^\n*/
 var trailingNewLinesRegExp = /\n*$/
-var DEFAULT_ESCAPES = [
+var escapes = [
   [/\\/g, '\\\\'],
   [/\*/g, '\\*'],
   [/^-/g, '\\-'],
@@ -27,7 +27,6 @@ export default function TurndownService (options) {
 
   var defaults = {
     rules: COMMONMARK_RULES,
-    escapes: DEFAULT_ESCAPES,
     headingStyle: 'setext',
     hr: '* * *',
     bulletListMarker: '*',
@@ -132,6 +131,20 @@ TurndownService.prototype = {
   remove: function (filter) {
     this.rules.remove(filter)
     return this
+  },
+
+  /**
+   * Escapes Markdown syntax
+   * @public
+   * @param {String} string The string to escape
+   * @returns A string with Markdown syntax escaped
+   * @type String
+   */
+
+  escape: function (string) {
+    return escapes.reduce(function (accumulator, escape) {
+      return accumulator.replace(escape[0], escape[1])
+    }, string)
   }
 }
 
@@ -147,7 +160,14 @@ function process (parentNode) {
   var self = this
   return reduce.call(parentNode.childNodes, function (output, node) {
     node = new Node(node, self.options)
-    var replacement = replacementForNode.call(self, node)
+
+    var replacement = ''
+    if (node.nodeType === 3) {
+      replacement = node.isCode ? node.nodeValue : self.escape(node.nodeValue)
+    } else if (node.nodeType === 1) {
+      replacement = replacementForNode.call(self, node)
+    }
+
     return join(output, replacement)
   }, '')
 }
