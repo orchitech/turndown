@@ -2,7 +2,7 @@ import { isBlock, isVoid, hasVoid, isMeaningfulWhenBlank, hasMeaningfulWhenBlank
 
 export default function Node (node, options) {
   node.isBlock = isBlock(node)
-  node.isCode = node.nodeName.toLowerCase() === 'code' || node.parentNode.isCode
+  node.isCode = node.nodeName === 'CODE' || node.parentNode.isCode
   node.isBlank = isBlank(node)
   node.flankingWhitespace = flankingWhitespace(node, options)
   return node
@@ -10,8 +10,6 @@ export default function Node (node, options) {
 
 function isBlank (node) {
   return (
-    ['A', 'THEAD', 'TBODY', 'TR', 'TH', 'TD', 'IFRAME', 'SCRIPT', 'AUDIO', 'VIDEO'].indexOf(node.nodeName) === -1 &&
-    /^\s*$/i.test(node.textContent) &&
     !isVoid(node) &&
     !isMeaningfulWhenBlank(node) &&
     /^\s*$/i.test(node.textContent) &&
@@ -21,7 +19,7 @@ function isBlank (node) {
 }
 
 function flankingWhitespace (node, options) {
-  if (node.isBlock || (node.isCode && options.preformattedCode)) {
+  if (node.isBlock || (options.preformattedCode && node.isCode)) {
     return { leading: '', trailing: '' }
   }
 
@@ -68,7 +66,7 @@ function isFlankedByWhitespace (side, node, options) {
   if (sibling) {
     if (sibling.nodeType === 3) {
       isFlanked = regExp.test(sibling.nodeValue)
-    } else if (sibling.nodeName === 'CODE' && options.preformattedCode) {
+    } else if (options.preformattedCode && sibling.nodeName === 'CODE') {
       isFlanked = false
     } else if (sibling.nodeType === 1 && !isBlock(sibling)) {
       isFlanked = regExp.test(sibling.textContent)

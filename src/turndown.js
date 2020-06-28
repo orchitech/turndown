@@ -142,6 +142,8 @@ TurndownService.prototype = {
    * Escapes Markdown syntax
    * @public
    * @param {String} string The string to escape
+   * @param {Text} node The DOM node context
+   * @param {Object} options The TurndownService options
    * @returns A string with Markdown syntax escaped
    * @type String
    */
