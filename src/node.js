@@ -34,7 +34,7 @@ function flankingWhitespace (node, options) {
 
   // abandon trailing ASCII WS if right-flanked by ASCII WS
   if (edges.trailingAscii && isFlankedByWhitespace('right', node, options)) {
-    edges.leading = edges.trailingNonAscii
+    edges.trailing = edges.trailingNonAscii
   }
 
   return { leading: edges.leading, trailing: edges.trailing }

@@ -69,7 +69,7 @@ sit</pre>
 
 <div class="case" data-name="code starting with a backtick">
   <div class="input"><code>`starting with a backtick</code></div>
-  <pre class="expected">`` `starting with a backtick``</pre>
+  <pre class="expected">`` `starting with a backtick ``</pre>
 </div>
 
 <div class="case" data-name="code containing markdown syntax">
@@ -933,13 +933,6 @@ Baz</pre>
   <pre class="expected">Foo&nbsp;Bar</pre>
 </div>
 
-<div class="case" data-name="text separated by ASCII and nonASCII space in an element">
-  <div class="input">
-    <p>Foo<span>  &nbsp;  </span>Bar</p>
-  </div>
-  <pre class="expected">Foo &nbsp; Bar</pre>
-</div>
-
 <div class="case" data-name="triple tildes inside code" data-options='{"codeBlockStyle": "fenced", "fence": "~~~"}'>
   <div class="input">
 <pre><code>~~~
@@ -996,15 +989,17 @@ Code
 ```</pre>
 </div>
 
-<div class="case" data-name="list-like text with non-breaking spaces">
-  <div class="input">&nbsp;1. First<br>&nbsp;2. Second</div>
-  <pre class="expected">&nbsp;1. First  
-&nbsp;2. Second</pre>
+<div class="case" data-name="text separated by ASCII and nonASCII space in an element">
+  <div class="input">
+    <p>Foo<span>  &nbsp;  </span>Bar</p>
+  </div>
+  <pre class="expected">Foo &nbsp; Bar</pre>
 </div>
 
-<div class="case" data-name="flanking with unicode whitespace">
-  <div class="input"><strong>foo&nbsp;</strong>bar</div>
-  <pre class="expected">**foo**&nbsp;bar</pre>
+<div class="case" data-name="list-like text with non-breaking spaces">
+  <div class="input">&nbsp;1. First<br>&nbsp;2. Second</div>
+  <pre class="expected">&nbsp;1. First  <!-- hard break -->
+&nbsp;2. Second</pre>
 </div>
 
 <div class="case" data-name="element with trailing nonASCII WS followed by nonWS">
@@ -1025,6 +1020,26 @@ Code
 <div class="case" data-name="element with trailing nonASCII WS followed by ASCII WS">
   <div class="input"><i>foo&nbsp;</i> bar</div>
   <pre class="expected">_foo_&nbsp; bar</pre>
+</div>
+
+<div class="case" data-name="nonWS followed by element with leading nonASCII WS">
+  <div class="input">foo<i>&nbsp;bar</i></div>
+  <pre class="expected">foo&nbsp;_bar_</pre>
+</div>
+
+<div class="case" data-name="nonASCII WS followed by element with leading nonASCII WS">
+  <div class="input">foo&nbsp;<i>&nbsp;bar</i></div>
+  <pre class="expected">foo&nbsp;&nbsp;_bar_</pre>
+</div>
+
+<div class="case" data-name="nonASCII WS followed by element with leading ASCII WS">
+  <div class="input">foo&nbsp;<i> bar</i></div>
+  <pre class="expected">foo&nbsp; _bar_</pre>
+</div>
+
+<div class="case" data-name="ASCII WS followed by element with leading nonASCII WS">
+  <div class="input">foo <i>&nbsp;bar</i></div>
+  <pre class="expected">foo &nbsp;_bar_</pre>
 </div>
 
 <!-- Behavior of `<code>` with CSS set as `white-space: pre-wrap;`, e.g. in GitLab -->
@@ -1048,16 +1063,17 @@ Code
   <pre class="expected">**not so tight** `code` **wrap**</pre>
 </div>
 
-<!-- CommonMark code spans cannot have newlines -->
+<!-- newlines become spaces + extra space must be added  -->
 <div class="case" data-name="preformatted code with newlines" data-options='{"preformattedCode": true}'>
   <div class="input">
 <code>
 
- nasty code
+ nasty
+code
 
 </code>
   </div>
-  <pre class="expected">` nasty code`</pre>
+  <pre class="expected">`    nasty code   `</pre>
 </div>
 
 <!-- /TEST CASES -->
