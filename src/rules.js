@@ -63,7 +63,6 @@ function findRule (rules, node, options) {
     var rule = rules[i]
     if (filterValue(rule, node, options)) return rule
   }
-  return void 0
 }
 
 function filterValue (rule, node, options) {
